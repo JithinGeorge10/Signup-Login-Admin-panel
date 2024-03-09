@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 require('dotenv').config()
 require('./config/dbConnect.js')
 const userRouter = require('./routes/userRoute.js')
-
+const adminRouter = require('./routes/adminRoute.js')
 
 app.set('view engine', 'ejs')
 
@@ -23,7 +23,7 @@ app.use(session({
     saveUninitialized: true
 }))
 app.use(userRouter)
-
+app.use(adminRouter)
 
 
 app.listen(3000, () => console.log('port started'))

@@ -52,6 +52,10 @@
                 background-color: hsla(0, 0%, 100%, 0.9) !important;
                 backdrop-filter: saturate(200%) blur(25px);
             }
+
+            .error {
+                color: red;
+            }
         </style>
 
         <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
@@ -70,21 +74,26 @@
 
                     <div class="card bg-glass">
                         <div class="card-body px-4 py-5 px-md-5">
-                            <form action="/adminLogin" method="post">
+                            <form id="adminLogin" action="/adminLogin" method="post">
                                 <br> <br> <br>
 
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
-                                    <input type="email" id="form3Example3" class="form-control" />
-                                    <label class="form-label" type="email" for="form3Example3">Email address</label>
-                                </div>
+                                    <input type="email" placeholder="Email*" name="email" id="email"
+                                        class="form-control" />
 
+                                </div>
+                                <br>
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4" class="form-control" />
-                                    <label class="form-label" type="password" for="form3Example4">Password</label>
-                                </div>
+                                    <input type="password" placeholder="Password*" name="password" id="password"
+                                        class="form-control" />
 
+                                </div>
+                                <br>
+                              <%  if(invalid){ %>
+                                <p style="color: red;">Invalid email and password</p>
+                            <%    } %>
                                 <!-- Submit button -->
                                 <div style="display: flex;justify-content: center;">
                                     <button type="submit" class="btn btn-success btn-block mb-4">
@@ -95,6 +104,41 @@
                                 <br> <br> <br>
 
                             </form>
+                            <script src="https://code.jquery.com/jquery-3.7.1.js"
+                                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+                                crossorigin="anonymous"></script>
+                            <script
+                                src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+                                integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+                                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                            <script
+                                src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+                                integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+                                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+                            <script>
+
+                                $('#adminLogin').validate({
+
+                                    rules: {
+
+                                        email: {
+                                            pattern: /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/,
+                                            required: true
+
+
+
+                                        },
+                                        password: {
+                                            pattern: /^.{6,30}$/,
+                                            required: true
+
+                                        }
+                                    }
+
+                                });
+
+                            </script>
                         </div>
                     </div>
                 </div>

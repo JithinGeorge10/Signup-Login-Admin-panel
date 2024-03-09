@@ -16,7 +16,7 @@ const securePassword = async (password) => {
 
 const loginGet = async (req, res) => {
    if (req.session.userVerify) {
-      const userDB = await usercollection.findOne({ name: req.body.name })
+
 
       res.render('userPages/home', { userDetails: req.session.userDet })
    } else {
@@ -33,9 +33,7 @@ const signupGet = (req, res) => {
    req.session.save()
 }
 
-const adminLogin = (req, res) => {
-   res.render('adminPages/adminLogin')
-}
+
 
 
 
@@ -95,7 +93,7 @@ const loginVerify = async (req, res) => {
    }
 }
 
-const userLogout =(req,res)=>{
+const userLogout = (req, res) => {
    req.session.userVerify = false
    res.redirect('/')
 }
@@ -103,4 +101,4 @@ const userLogout =(req,res)=>{
 
 
 
-module.exports = { loginGet, signupGet, adminLogin, userRegister, loginVerify,userLogout }
+module.exports = { loginGet, signupGet, userRegister, loginVerify, userLogout }

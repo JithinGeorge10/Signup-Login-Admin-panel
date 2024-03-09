@@ -5,11 +5,11 @@ const router= express.Router()
 
 router.get('/', userContoller.loginGet)
 router.get('/signUp',userContoller.signupGet)
-router.get('/adminLogin',userContoller.adminLogin)
 router.post('/signUp',userContoller.userRegister)
 router.post('/login', userContoller.loginVerify)
 router.post('/logout', userContoller.userLogout)
-router.post('/adminLogin',userContoller.adminLogin)
+
+
 module.exports=router
 
 
