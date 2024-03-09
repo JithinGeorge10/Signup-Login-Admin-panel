@@ -14,12 +14,16 @@ const securePassword = async (password) => {
 }
 
 
-const loginGet = (req, res) => {
+const loginGet = async (req, res) => {
    if (req.session.userVerify) {
-      res.render('userPages/home')
+      const userDB = await usercollection.findOne({ name: req.body.name })
+
+      res.render('userPages/home', { userDetails: req.session.userDet })
    } else {
-      res.render('userPages/login', { signUp: req.session.signup })
+      res.render('userPages/login', { signUp: req.session.signup, exists: req.session.Exists, invalidpass: req.session.invalidpass })
       req.session.signup = false
+      req.session.Exists = false
+      req.session.invalidpass = false
       req.session.save()
    }
 }
@@ -75,12 +79,14 @@ const loginVerify = async (req, res) => {
          const passwordMatch = await bcrypt.compare(req.body.password, userData.password)
          if (passwordMatch) {
             req.session.userVerify = true
+            req.session.userDet = userData
             res.redirect('/')
          } else {
+            req.session.invalidpass = true
             res.redirect('/')
          }
       } else {
-
+         req.session.Exists = true
          res.redirect('/')
       }
    }
@@ -89,4 +95,12 @@ const loginVerify = async (req, res) => {
    }
 }
 
-module.exports = { loginGet, signupGet, adminLogin, userRegister, loginVerify }
+const userLogout =(req,res)=>{
+   req.session.userVerify = false
+   res.redirect('/')
+}
+
+
+
+
+module.exports = { loginGet, signupGet, adminLogin, userRegister, loginVerify,userLogout }

@@ -52,7 +52,8 @@
                 background-color: hsla(0, 0%, 100%, 0.9) !important;
                 backdrop-filter: saturate(200%) blur(25px);
             }
-            .error{
+
+            .error {
                 color: red;
             }
         </style>
@@ -75,36 +76,46 @@
                         <div class="card-body px-4 py-5 px-md-5">
                             <form id="loginUser" action="/login" method="post">
 
-<br>
-<br>
+                                <br>
+                                <br>
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
-                                    <input name="email" placeholder="Email Address" type="email" id="email" class="form-control" />
-                                   
+                                    <input name="email" placeholder="Email Address" type="email" id="email"
+                                        class="form-control" />
+
                                 </div>
 
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
-                                    <input name="password" placeholder="Password" type="password" id="password" class="form-control" />
-                                   
+                                    <input name="password" placeholder="Password" type="password" id="password"
+                                        class="form-control" />
+
                                 </div>
 
                                 <% if(signUp){%>
                                     <p style="color: green;">User added Successfully</p>
                                     <% } %>
+                                        <% if(exists){%>
+                                            <p style="color: red;">Not an existing user</p>
+                                            <% } %>
+                                            <% if(invalidpass){%>
+                                                <p style="color: red;">Incorrect Password</p>
+                                                <% } %>
+                                            
+                                               
+                                                        <!-- Submit button -->
+                                                        <div style="display: flex;justify-content: center;">
+                                                            <button type="submit"
+                                                                class="btn btn-success btn-block mb-4">
+                                                                Login
+                                                            </button>
+                                                        </div>
+                                                        New user?Create an account&nbsp;
+                                                        <a class="btn btn-info btn-block mb-4" href="/signUp">
+                                                            Signup
+                                                        </a>
 
-                                        <!-- Submit button -->
-                                        <div style="display: flex;justify-content: center;">
-                                            <button type="submit" class="btn btn-success btn-block mb-4">
-                                                Login
-                                            </button>
-                                        </div>
-                                        New user?Create an account&nbsp;
-                                        <a class="btn btn-info btn-block mb-4" href="/signUp">
-                                            Signup
-                                        </a>
-
-                                        <!-- <div style="display: flex;">
+                                                        <!-- <div style="display: flex;">
                                     <div class="Signup">
                                         <h6>New user?Create an account </h6>
                                         <a class="btn btn-primary btn-block mb-4" href="/signUp">
@@ -112,12 +123,12 @@
                                         </a>
                                     </div>
                                 </div> -->
-                                        <br>
-                                        <a class="btn btn-dark btn-block mb-4" href="/adminLogin">
-                                            Admin Login
-                                        </a>
-<br>
-<br>
+                                                        <br>
+                                                        <a class="btn btn-dark btn-block mb-4" href="/adminLogin">
+                                                            Admin Login
+                                                        </a>
+                                                        <br>
+                                                        <br>
 
                             </form>
 
