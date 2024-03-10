@@ -1,14 +1,15 @@
+const usercollection = require("../model/userModel")
 
-const adminGet = (req, res) => {
+
+const adminGet = async(req, res) => {
     if (req.session.logged) {
-        res.render('adminPages/adminHome')
+        const userData=await usercollection.find()
+        res.render('adminPages/adminHome',{userdetails:userData})
     } else {
         res.render('adminPages/adminLogin', { invalid: req.session.invalid })
         req.session.invalid = false
         req.session.save()
     }
-
-
 }
 
 
@@ -28,9 +29,17 @@ const adminLogin = async (req, res) => {
     }
 }
 
+const adminLogout = async (req, res) => {
+    try {
+        req.session.logged = false
+        res.redirect('/adminLogin')
 
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-module.exports = { adminGet, adminLogin }
+module.exports = { adminGet, adminLogin, adminLogout }
 
 
 
