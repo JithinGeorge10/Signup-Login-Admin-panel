@@ -10,32 +10,83 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <!-- Example Bootstrap Icons CDN link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
+
+
 </head>
 
-<body style='background-color: hsl(218, 41%, 15%);'>
+<body style='background-color:black'>
 
     <div class="container">
         <!-- navbar -->
-
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand">Admin's Home Page</a>
-                <form class="d-flex" action="adminLogout" method="POST">
-                    <button class="btn btn-danger" type="submit">Logout</button>
-                </form>
-            </div>
+        <nav class="navbar navbar-dark custom-navbar  justify-content-between" style="background-color: black;">
+            <a class="navbar-brand">Admin's Home Page</a>
+            <form class="d-flex" action="adminLogout" method="POST">
+                <button class="btn btn-danger" type="submit">Logout</button>
+            </form>
         </nav>
+        <!-- Button trigger modal -->
 
+        <!--Add user Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="adduser">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" placeholder="Username*" class="form-control" name="name" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" placeholder="Email*" class="form-control" name="email" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" placeholder="Phone*" name="phone" id="phone" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" placeholder="Password*(At least 6 characters long)"
+                                    name="password" id="password" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                  
 
+                </div>
+            </div>
+        </div>
 
+        <h1 style="color:wheat;">Manage Users</h1>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add User
+        </button>
+        <br>
 
-        <h1 style="color: wheat;">Manage Users</h1>
+        <br>
         <!-- search -->
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </div>
         </nav>
@@ -45,28 +96,127 @@
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
-                    <!-- <th scope="col">Action</th> -->
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
 
-          <%  for(let i=0;i<userdetails.length;i++){ %>
+            <% for(let i=0;i<userdetails.length;i++){ %>
                 <tbody>
                     <tr>
-                        <td> <%= userdetails[i].name %> </td>
-                        <td> <%= userdetails[i].email %></td>
-                        <td> <%= userdetails[i].phone %></td>
-                        
+                        <td>
+                            <%= userdetails[i].name %>
+                        </td>
+                        <td>
+                            <%= userdetails[i].email %>
+                        </td>
+                        <td>
+                            <%= userdetails[i].phone %>
+                        </td>
+                        <td>
+                            <a href="" style="text-decoration: none; color: yellow;"><b
+                                    class="bi bi-pencil-square">edit</b></a> &nbsp;&nbsp;
+                            <a href="" style="text-decoration: none; color: red;"> <b
+                                    class="bi bi-trash-fill">delete</b></a>
+                        </td>
+
                     </tr>
                 </tbody>
 
-        <%    }  %>
-          
+                <% } %>
+
 
 
 
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+    integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+    integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+
+    $('#adduser').validate({
+
+        rules: {
+            name: {
+                pattern: /^[a-zA-Z]+(?: [a-zA-Z]+)*$/,
+                required: true
+            },
+            email: {
+                pattern: /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/,
+                required: true
+
+            },
+            password: {
+                pattern: /^.{6,30}$/,
+                required: true
+
+            },
+            phone: {
+                pattern: /^\+?[1-9][0-9]{9}$/,
+                required: true
+            }
+        },
+        submitHandler: async function (form, event) {
+            event.preventDefault();
+
+            let formData = {
+                name: form.name.value,
+                email: form.email.value,
+                phone: form.phone.value,
+                password: form.password.value
+            }
+
+            let response = await fetch('/adminAdd', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            const result = await response.json()
+            console.log(result);
+            if (result.emailExists) {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Email already exists!",
+
+                });
+            } else if (result.success) {
+                await Swal.fire({
+
+                    icon: "success",
+                    title: "New User Added",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                (() => window.location.reload())()
+            }
+
+        }
+
+    });
+
+</script>
 
 </body>
+
+
+<script>
+
+
+
+
+
+</script>
+
+
 
 </html>
