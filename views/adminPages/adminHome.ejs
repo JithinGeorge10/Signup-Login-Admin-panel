@@ -12,6 +12,21 @@
         crossorigin="anonymous"></script>
     <!-- Example Bootstrap Icons CDN link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- form validate -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+        integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+        integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .error {
@@ -28,7 +43,7 @@
     <div class="container">
         <!-- navbar -->
         <nav class="navbar navbar-dark custom-navbar  justify-content-between" style="background-color: black;">
-            <a class="navbar-brand">Admin's Home Page</a>
+            <a class="navbar-brand">Admin Dashboard</a>
             <form class="d-flex" action="adminLogout" method="POST">
                 <button class="btn btn-danger" type="submit">Logout</button>
             </form>
@@ -68,7 +83,7 @@
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
-                  
+
 
                 </div>
             </div>
@@ -84,8 +99,9 @@
         <!-- search -->
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form action="/adminSearch" method="post" class="d-flex">
+                    <input class="form-control me-2" name="search" type="search" placeholder="Search"
+                        aria-label="Search">
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </div>
@@ -113,14 +129,124 @@
                             <%= userdetails[i].phone %>
                         </td>
                         <td>
-                            <a href="" style="text-decoration: none; color: yellow;"><b
-                                    class="bi bi-pencil-square">edit</b></a> &nbsp;&nbsp;
-                            <a href="" style="text-decoration: none; color: red;"> <b
-                                    class="bi bi-trash-fill">delete</b></a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#editmodal<%=i%>">
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-danger"
+                                onclick="deleteUser('<%= userdetails[i]._id %>')">
+                                delete
+                            </button>
                         </td>
 
                     </tr>
                 </tbody>
+
+                
+
+
+                    <!-- editmodal
+                    <div class="modal fade" id="editmodal<%=i%>" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="edituser<%=i%>">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input required pattern="/^[a-zA-Z]+(?: [a-zA-Z]+)*$/" type="text"
+                                                value="<%= userdetails[i].name %>" class="form-control" name="name"
+                                                id="name<%=i%>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" value="<%= userdetails[i].email %>" class="form-control"
+                                                name="email" id="email<%=i%>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input required type="tel" value="<%= userdetails[i].phone%>" name="phone"
+                                                id="phone<%=i%>" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <script>
+                        $().ready(function () {
+                            $('#edituser<%=i%>').validate({
+                                rules: {
+                                    name: {
+                                        pattern: /^[a-zA-Z]+(?: [a-zA-Z]+)*$/,
+                                        required: true
+                                    },
+                                    email: {
+                                        pattern: /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/,
+                                        required: true
+
+                                    },
+                                    password: {
+                                        pattern: /^.{6,30}$/,
+                                        required: true
+
+                                    },
+                                    phone: {
+                                        pattern: /^\+?[1-9][0-9]{9}$/,
+                                        required: true
+                                    }
+                                },
+                                submitHandler: async function (form, event) {
+                                    event.preventDefault();
+
+                                    const email = document.getElementById('email<%=i%>').value
+
+                                    let formData = { email }
+                                        console.log(formData);
+                                    let response = await fetch('/adminEdit', {
+
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify(formData)
+                                    })
+                                    //     const result = await response.json()
+                                    //     console.log(result);
+                                    //     if (result.emailExists) {
+                                    //         await Swal.fire({
+                                    //             icon: "error",
+                                    //             title: "Oops...",
+                                    //             text: "Email already exists!",
+
+                                    //         });
+                                    //     } else if (result.success) {
+                                    //         await Swal.fire({
+                                    //             icon: "success",
+                                    //             title: "New User Added",
+                                    //             showConfirmButton: false,
+                                    //             timer: 1500
+                                    //         });
+                                    //         (() => window.location.reload())()
+                                    //     }
+
+                                }
+                            })
+                        })
+                    </script> -->
+
 
                 <% } %>
 
@@ -129,94 +255,106 @@
 
         </table>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
-    integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
-    integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-<script>
+    <script>
 
-    $('#adduser').validate({
+        $('#adduser').validate({
 
-        rules: {
-            name: {
-                pattern: /^[a-zA-Z]+(?: [a-zA-Z]+)*$/,
-                required: true
+            rules: {
+                name: {
+                    pattern: /^[a-zA-Z]+(?: [a-zA-Z]+)*$/,
+                    required: true
+                },
+                email: {
+                    pattern: /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/,
+                    required: true
+
+                },
+                password: {
+                    pattern: /^.{6,30}$/,
+                    required: true
+
+                },
+                phone: {
+                    pattern: /^\+?[1-9][0-9]{9}$/,
+                    required: true
+                }
             },
-            email: {
-                pattern: /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/,
-                required: true
+            submitHandler: async function (form, event) {
+                event.preventDefault();
 
-            },
-            password: {
-                pattern: /^.{6,30}$/,
-                required: true
+                let formData = {
+                    name: form.name.value,
+                    email: form.email.value,
+                    phone: form.phone.value,
+                    password: form.password.value
+                }
 
-            },
-            phone: {
-                pattern: /^\+?[1-9][0-9]{9}$/,
-                required: true
+                let response = await fetch('/adminAdd', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                })
+                const result = await response.json()
+                console.log(result);
+                if (result.emailExists) {
+                    await Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Email already exists!",
+
+                    });
+                } else if (result.success) {
+                    await Swal.fire({
+
+                        icon: "success",
+                        title: "New User Added",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    (() => window.location.reload())()
+                }
+
             }
-        },
-        submitHandler: async function (form, event) {
-            event.preventDefault();
 
-            let formData = {
-                name: form.name.value,
-                email: form.email.value,
-                phone: form.phone.value,
-                password: form.password.value
-            }
+        });
 
-            let response = await fetch('/adminAdd', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-            const result = await response.json()
-            console.log(result);
-            if (result.emailExists) {
-                await Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Email already exists!",
+    </script>
 
-                });
-            } else if (result.success) {
-                await Swal.fire({
 
-                    icon: "success",
-                    title: "New User Added",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                (() => window.location.reload())()
-            }
+    <script>
+        async function deleteUser(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const respose = await fetch('/userDelete/' + id, { method: 'DELETE' })
+                    const result = await respose.json()
+                    console.log(result);
+                    if (result.success) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your file has been deleted.",
+                            icon: "success"
+                        }).then(() => window.location.reload())
+
+                    }
+
+                }
+            });
 
         }
-
-    });
-
-</script>
-
+    </script>
 </body>
 
-
 <script>
-
-
-
-
-
 </script>
-
-
 
 </html>

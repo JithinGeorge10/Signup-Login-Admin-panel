@@ -4,9 +4,16 @@ const bycrypt = require('bcrypt')
 
 const adminGet = async (req, res) => {
     if (req.session.logged) {
+
+        if (req.session.search) {
+
+            res.render('adminPages/adminHome', { userdetails: req.session.search })
+            req.session.search = false
+            return req.session.save()
+        }
         const userData = await usercollection.find()
         res.render('adminPages/adminHome', { userdetails: userData })
-        req.session.userAdd=false
+        req.session.userAdd = false
     } else {
         res.render('adminPages/adminLogin', { invalid: req.session.invalid })
         req.session.invalid = false
@@ -54,21 +61,57 @@ const addUser = async (req, res) => {
         });
         const checkEmail = await usercollection.findOne({ email: req.body.email });
         if (checkEmail) {
-         res.status(208).send({emailExists:true})
+            res.status(208).send({ emailExists: true })
         } else {
-            req.session.userAdd=true
+            req.session.userAdd = true
             newUser.save();
-            res.status(200).send({success:true})
-            
+            res.status(200).send({ success: true })
+
         }
     } catch (error) {
         console.log(error);
     }
 };
 
+const userDelete = async (req, res) => {
+    try {
+        // console.log(req.params.id);
+        // const doc=await usercollection.findOne({_id:req.params.id})
+        // console.log(doc);
+        await usercollection.deleteOne({ _id: req.params.id })
+        res.status(200).send({ success: true })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const userSearch = async (req, res) => {
+    try {
+        const searchedhUsers = await usercollection.find({
+            name: { $regex: req.body.search, $options: 'i' },
+        })
+        req.session.search = searchedhUsers
+        res.redirect('/adminLogin')
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const editUser = async (req, res) => {
+    try {
+      
+        console.log(req.body);
+        // req.session.userEdit = true
+        // editedUser.save();
+        // res.status(200).send({ success: true })
 
 
-module.exports = { adminGet, adminLogin, adminLogout, addUser }
+    } catch (err) {
+        console.log(RangeError);
+    }
+}
+module.exports = { adminGet, adminLogin, adminLogout, addUser, userDelete, userSearch, editUser }
 
 
 
