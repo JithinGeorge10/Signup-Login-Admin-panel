@@ -50,7 +50,7 @@ const adminLogout = async (req, res) => {
 
 
 const addUser = async (req, res) => {
-    console.log(req.body);
+
     try {
         const encryptedPassword = bycrypt.hashSync(req.body.password, 10);
         const newUser = new usercollection({
@@ -59,8 +59,8 @@ const addUser = async (req, res) => {
             phone: req.body.phone,
             password: encryptedPassword,
         });
-        const checkEmail = await usercollection.findOne({ email: req.body.email });
-        if (checkEmail) {
+        const checkAdduser = await usercollection.findOne({ $or: [{ email: req.body.email }, { phone: req.body.phone }] });
+        if (checkAdduser) {
             res.status(208).send({ emailExists: true })
         } else {
             req.session.userAdd = true
@@ -100,18 +100,32 @@ const userSearch = async (req, res) => {
 
 const editUser = async (req, res) => {
     try {
-      
-        console.log(req.body);
-        // req.session.userEdit = true
-        // editedUser.save();
-        // res.status(200).send({ success: true })
-
-
+        const details = await usercollection.findById({ _id: req.params.id })
+        res.render('adminPages/adminEdit', { details })
     } catch (err) {
-        console.log(RangeError);
+        console.log(err);
     }
 }
-module.exports = { adminGet, adminLogin, adminLogout, addUser, userDelete, userSearch, editUser }
+
+
+const updateUser = async (req, res) => {
+    try {
+        const { name, email, phone } = req.body
+        const userCheck=await usercollection.findOne({$or:[{email},{phone}]})
+        if(userCheck && req.params.id!= userCheck._id){
+           res.send({mailexists:true})
+        }else{
+            await usercollection.findByIdAndUpdate({ _id: req.params.id }, { $set: { name, email, phone } })
+            res.send({ success: true })
+        }
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+
+}
+
+module.exports = { adminGet, adminLogin, adminLogout, addUser, userDelete, userSearch, editUser, updateUser }
 
 
 

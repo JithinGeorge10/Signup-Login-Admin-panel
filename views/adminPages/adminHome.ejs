@@ -83,8 +83,6 @@
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
-
-
                 </div>
             </div>
         </div>
@@ -129,10 +127,16 @@
                             <%= userdetails[i].phone %>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#editmodal<%=i%>">
                                 Edit
-                            </button>
+                            </button> -->
+                            <a href="/adminEdit/<%= userdetails[i]._id %>"><button id="edit<%i%>" type="button" class="btn btn-info">
+                                Edit
+                            </button></a>
+
+                            
+
                             <button type="button" class="btn btn-danger"
                                 onclick="deleteUser('<%= userdetails[i]._id %>')">
                                 delete
@@ -141,122 +145,13 @@
 
                     </tr>
                 </tbody>
-
-                
-
-
-                    <!-- editmodal
-                    <div class="modal fade" id="editmodal<%=i%>" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form id="edituser<%=i%>">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label>Username</label>
-                                            <input required pattern="/^[a-zA-Z]+(?: [a-zA-Z]+)*$/" type="text"
-                                                value="<%= userdetails[i].name %>" class="form-control" name="name"
-                                                id="name<%=i%>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" value="<%= userdetails[i].email %>" class="form-control"
-                                                name="email" id="email<%=i%>" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Phone Number</label>
-                                            <input required type="tel" value="<%= userdetails[i].phone%>" name="phone"
-                                                id="phone<%=i%>" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </form>
-
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <script>
-                        $().ready(function () {
-                            $('#edituser<%=i%>').validate({
-                                rules: {
-                                    name: {
-                                        pattern: /^[a-zA-Z]+(?: [a-zA-Z]+)*$/,
-                                        required: true
-                                    },
-                                    email: {
-                                        pattern: /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/,
-                                        required: true
-
-                                    },
-                                    password: {
-                                        pattern: /^.{6,30}$/,
-                                        required: true
-
-                                    },
-                                    phone: {
-                                        pattern: /^\+?[1-9][0-9]{9}$/,
-                                        required: true
-                                    }
-                                },
-                                submitHandler: async function (form, event) {
-                                    event.preventDefault();
-
-                                    const email = document.getElementById('email<%=i%>').value
-
-                                    let formData = { email }
-                                        console.log(formData);
-                                    let response = await fetch('/adminEdit', {
-
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify(formData)
-                                    })
-                                    //     const result = await response.json()
-                                    //     console.log(result);
-                                    //     if (result.emailExists) {
-                                    //         await Swal.fire({
-                                    //             icon: "error",
-                                    //             title: "Oops...",
-                                    //             text: "Email already exists!",
-
-                                    //         });
-                                    //     } else if (result.success) {
-                                    //         await Swal.fire({
-                                    //             icon: "success",
-                                    //             title: "New User Added",
-                                    //             showConfirmButton: false,
-                                    //             timer: 1500
-                                    //         });
-                                    //         (() => window.location.reload())()
-                                    //     }
-
-                                }
-                            })
-                        })
-                    </script> -->
-
-
                 <% } %>
-
-
-
-
         </table>
     </div>
 
 
+
+    <!-- adduser validate -->
     <script>
 
         $('#adduser').validate({
@@ -302,7 +197,7 @@
                     await Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "Email already exists!",
+                        text: "Email/Phone already exists!",
 
                     });
                 } else if (result.success) {
@@ -315,12 +210,11 @@
                     });
                     (() => window.location.reload())()
                 }
-
             }
-
         });
 
     </script>
+
 
 
     <script>

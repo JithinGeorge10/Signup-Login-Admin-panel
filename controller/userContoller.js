@@ -20,7 +20,7 @@ const loginGet = async (req, res) => {
       res.render('userPages/home', { userDetails: req.session.userDet })
    } else {
       res.render('userPages/login', { signUp: req.session.signup, exists: req.session.Exists, invalidpass: req.session.invalidpass })
-      req.session.signup = false
+     
       req.session.Exists = false
       req.session.invalidpass = false
       req.session.save()
@@ -31,10 +31,6 @@ const signupGet = (req, res) => {
    req.session.userExist = false
    req.session.save()
 }
-
-
-
-
 
 
 const userRegister = async (req, res) => {
@@ -50,24 +46,23 @@ const userRegister = async (req, res) => {
          phone: req.body.phone
       })
 
-      const userExists = await usercollection.findOne({ email: req.body.email })
+      const userExists = await usercollection.findOne({ $or:[{email: req.body.email},{phone:req.body.phone}] })
       if (userExists) {
          req.session.userExist = true
          res.redirect('/signUp')
       } else {
+         req.session.signup=true
          await user.save()
-         req.session.signup = true
+        
          res.redirect('/')
+      
       }
    }
 
    catch (error) {
       console.log(error);
    }
-
-
 }
-
 
 const loginVerify = async (req, res) => {
    try {

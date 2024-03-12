@@ -1,4 +1,5 @@
 const express =require('express')
+const adminAuth=require('../middlewares/adminAuth.js')
 const adminContoller =require('../controller/adminController.js')
 const router= express.Router()
   
@@ -8,9 +9,8 @@ router.post('/adminLogout',adminContoller.adminLogout)
 router.post('/adminAdd',adminContoller.addUser)
 router.delete('/userDelete/:id',adminContoller.userDelete)
 router.post('/adminSearch',adminContoller.userSearch)
-router.post('/adminEdit',adminContoller.editUser)
-
-
+router.get('/adminEdit/:id',adminAuth,  adminContoller.editUser)
+router.put('/updateUser/:id',adminContoller.updateUser)
 module.exports=router
 
 
