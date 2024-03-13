@@ -79,8 +79,7 @@
 
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
-                                    <input  placeholder="Email*" name="email" id="email"
-                                        class="form-control" />
+                                    <input placeholder="Email*" name="email" id="email" class="form-control" />
 
                                 </div>
                                 <br>
@@ -91,19 +90,21 @@
 
                                 </div>
                                 <br>
-                              <%  if(invalid){ %>
-                                <p style="color: red;">Invalid email and password</p>
-                            <%    } %>
-                                <!-- Submit button -->
-                                <div style="display: flex;justify-content: center;">
-                                    <button type="submit" class="btn btn-success btn-block mb-4">
-                                        Login
-                                    </button>
-                                </div>
+                                <% if(invalid){ %>
+                                    <p style="color: red;">Invalid email and password</p>
+                                    <% } %>
+                                        <!-- Submit button -->
+                                        <div style="display: flex;justify-content: center;">
+                                            <button type="submit" class="btn btn-success btn-block mb-4">
+                                                Login 
+                                            </button>
+                                        </div>
+                                       
 
-                                <br> <br> <br>
+                                        <br> <br> <br>
 
                             </form>
+                            <a href="/"><button class="btn btn-info btn-block mb-4">User Login Page</button></a>
                             <script src="https://code.jquery.com/jquery-3.7.1.js"
                                 integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
                                 crossorigin="anonymous"></script>
