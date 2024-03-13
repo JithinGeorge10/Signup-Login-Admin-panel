@@ -20,7 +20,7 @@ const loginGet = async (req, res) => {
       res.render('userPages/home', { userDetails: req.session.userDet })
    } else {
       res.render('userPages/login', { signUp: req.session.signup, exists: req.session.Exists, invalidpass: req.session.invalidpass })
-     
+      req.session.signup=false
       req.session.Exists = false
       req.session.invalidpass = false
       req.session.save()
