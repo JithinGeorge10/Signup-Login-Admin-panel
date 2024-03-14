@@ -36,7 +36,7 @@ const signupGet = (req, res) => {
 const userRegister = async (req, res) => {
 
    try {
-
+       
       const bcryptpassword = await securePassword(req.body.password)
 
       const user = new usercollection({
@@ -47,6 +47,7 @@ const userRegister = async (req, res) => {
       })
 
       const userExists = await usercollection.findOne({ $or:[{email: req.body.email},{phone:req.body.phone}] })
+     
       if (userExists) {
          req.session.userExist = true
          res.redirect('/signUp')
